@@ -106,7 +106,7 @@ class EventControllerApi extends Controller
 
                 $categories = array_merge($types, $topics);
 
-                $vent_types = strtolower(implode(",", $categories));
+                $vent_types = strtolower(implode(", ", $categories));
 
 
                 Logs::create(

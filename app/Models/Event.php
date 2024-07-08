@@ -14,7 +14,7 @@ class Event extends Model
     protected $guarded = [];
 
     protected $hidden = [
-        'province_id','topic_id','event_type_id','company_id','deleted_at','user_id'
+        'id','province_id','topic_id','event_type_id','company_id','deleted_at','user_id'
     ];
 
     public function tickets()
