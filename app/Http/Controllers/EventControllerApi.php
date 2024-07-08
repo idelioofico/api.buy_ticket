@@ -18,7 +18,7 @@ class EventControllerApi extends Controller
         public function index(Request $request)
         {
                 $response = array(
-                        'message' => 'Oops, não foram encontrados eventos para a categoria desejada',
+                        'message' => 'Oops, não foram encontrados eventos para a "'.$request->param.'" ',
                         'status' => $status = 200,
                         'data' => [],
                 );
