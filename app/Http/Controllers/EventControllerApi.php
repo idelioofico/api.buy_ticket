@@ -100,9 +100,9 @@ class EventControllerApi extends Controller
 
         public function categories(Request $request)
         {
-                $types = EventType::get()->pluck('name')->toArray();
 
-                $topics = EventTopic::get()->pluck('name')->toArray();
+                $types = EventType::has('events')->get()->pluck('name')->toArray();
+                $topics = EventTopic::has('events')->get()->pluck('name')->toArray();
 
                 $categories = array_merge($types, $topics);
 

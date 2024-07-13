@@ -12,4 +12,9 @@ class EventType extends Model
     protected $hidden = [
         'id','created_at','updated_at'
     ];
+
+    public function events()
+    {
+        return $this->hasMany(Event::class);
+    }
 }
