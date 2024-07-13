@@ -18,7 +18,7 @@ class EventControllerApi extends Controller
         public function index(Request $request)
         {
                 $response = array(
-                        'message' => 'Oops, não foram encontrados eventos para a "'.$request->param.'" ',
+                        'message' => 'Oops, não foram encontrados eventos para a "' . $request->param . '" ',
                         'status' => $status = 200,
                         'data' => [],
                 );
@@ -26,7 +26,7 @@ class EventControllerApi extends Controller
                 try {
 
                         $param = $request->param;
-                        $query = Event::withoutGlobalScopes()->with('province','event_type','producer','topic');
+                        $query = Event::with('province', 'event_type', 'producer', 'topic');
 
                         if (!empty($param)) {
 
@@ -34,7 +34,7 @@ class EventControllerApi extends Controller
 
                                 Logs::create(
                                         [
-                                                'action'=>'search_category',
+                                                'action' => 'search_category',
                                                 'request' => json_encode($param),
                                                 'response' => json_encode($category),
                                                 'ip' => $request->ip(),
@@ -46,7 +46,7 @@ class EventControllerApi extends Controller
 
                                 Logs::create(
                                         [
-                                                'action'=>'search_topic',
+                                                'action' => 'search_topic',
                                                 'request' => json_encode($param),
                                                 'response' => json_encode($topic),
                                                 'ip' => $request->ip(),
@@ -60,21 +60,32 @@ class EventControllerApi extends Controller
 
                                         $events = $query->where('topic_id', $topic->id)->get();
                                 } else if (!empty($category) && !empty($topic)) {
-
                                         $events = $query->where('event_type_id', $category->id)->orWhere('topic_id', $topic->id)->get();
+                                } else if (empty($categories) && empty($topic)) {
+                                        $events = $query->where('title','like',$request->param)->get();
                                 }
-
+                                
                         } else {
-                                $events = Event::withoutGlobalScopes()->with('province','event_type','producer','topic')->get();
+
+                                $events = Event::with('province', 'event_type', 'producer', 'topic')->get();
                         }
 
                         if (!empty($events) && count($events) > 0) {
 
                                 $response = array(
-                                        'message' => count($events).' eventos listados!',
+                                        'message' => count($events) . ' eventos listados!',
                                         'status' => $status = 200,
                                         'data' => $events,
                                 );
+
+                        } else {
+
+                                $response = array(
+                                        'message' => "Oops, nenhum evento foi encontrado!",
+                                        'status' => $status = 404,
+                                        'data' => [],
+                                );
+
                         }
                 } catch (Exception $ex) {
 
@@ -88,7 +99,7 @@ class EventControllerApi extends Controller
 
                 Logs::create(
                         [
-                                'action'=>'search_event',
+                                'action' => 'search_event',
                                 'request' => json_encode($request->all()),
                                 'response' => json_encode($response),
                                 'ip' => $request->ip(),
@@ -111,7 +122,7 @@ class EventControllerApi extends Controller
 
                 Logs::create(
                         [
-                                'action'=>'get_categories',
+                                'action' => 'get_categories',
                                 'request' => json_encode($request->all()),
                                 'response' => json_encode($vent_types),
                                 'ip' => $request->ip(),
@@ -119,10 +130,10 @@ class EventControllerApi extends Controller
                         ]
                 );
 
-                $response=Array(
-                    'message' => count($categories).' categorias listadas.',
-                    'status' => $status = 200,
-                    'data' => $vent_types,
+                $response = array(
+                        'message' => count($categories) . ' categorias listadas.',
+                        'status' => $status = 200,
+                        'data' => $vent_types,
                 );
                 return response()->json($response, 200);
         }
