@@ -64,7 +64,7 @@ class EventControllerApi extends Controller
                                 } else if (empty($categories) && empty($topic)) {
                                         $events = $query->where('title','like',$request->param)->get();
                                 }
-                                
+
                         } else {
 
                                 $events = Event::with('province', 'event_type', 'producer', 'topic')->get();
@@ -82,7 +82,7 @@ class EventControllerApi extends Controller
 
                                 $response = array(
                                         'message' => "Oops, nenhum evento foi encontrado!",
-                                        'status' => $status = 404,
+                                        'status' => $status = 200,
                                         'data' => [],
                                 );
 
