@@ -14,7 +14,7 @@ Route::prefix('v1')->group(function () {
 
     Route::prefix('events')->group(function () {
         Route::get('/',[EventControllerApi::class,'index']);
-        Route::get('{code}',[EventControllerApi::class,'details']);
+        Route::get('{code}/details',[EventControllerApi::class,'details']);
         Route::get('categories', [EventControllerApi::class, 'categories']);
     });
 
