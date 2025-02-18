@@ -5,8 +5,6 @@ use App\Http\Controllers\EventControllerApi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-
-
 Route::prefix('v1')->group(function () {
 
     Route::prefix('users')->group(function () {
@@ -16,9 +14,8 @@ Route::prefix('v1')->group(function () {
 
     Route::prefix('events')->group(function () {
         Route::get('/',[EventControllerApi::class,'index']);
+        Route::get('{code}',[EventControllerApi::class,'details']);
         Route::get('categories', [EventControllerApi::class, 'categories']);
     });
 
 });
-
-
