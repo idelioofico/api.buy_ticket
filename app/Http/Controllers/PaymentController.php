@@ -126,7 +126,7 @@ class PaymentController extends Controller
                                 'message' => 'Pagamento efectuado com sucesso',
                             );
 
-                            dd("Hello:", $payment);
+                            // dd("Hello:", $payment);
                         } else {
 
                             $response = array(

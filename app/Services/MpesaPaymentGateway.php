@@ -43,7 +43,7 @@ class MpesaPaymentGateway implements IPaymentGateway
 
         if (!empty($mpesaResponse) && $mpesaResponse->success  &&  $mpesaResponse->data->output_ResponseCode == "INS-0") {
 
-            $payment->wt_success=true;
+            $payment->success=true;
             $paymentResponse = array(
                 'success' => true,
                 'data' => $payment,
