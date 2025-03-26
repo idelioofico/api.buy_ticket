@@ -11,4 +11,21 @@ class Setting extends Model
     use HasFactory, SoftDeletes;
     protected $guarded = [];
 
+        public   function getValue($c_type)
+        {
+            return Setting::where("type", $c_type)->get();
+        }
+
+        public static   function getValue2($c_type)
+        {
+            return Setting::where("type", $c_type)->get();
+        }
+
+        public static   function getSingleValue($c_type)
+        {
+            $data= Setting::where("type",$c_type)->first();
+            return !empty($data)?$data->value:null;
+        }
+
+
 }
