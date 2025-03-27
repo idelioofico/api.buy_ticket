@@ -28,7 +28,7 @@ class PaymentController extends Controller
         $status = 503;
 
         try {
-            DB::beginTransaction();
+            // DB::beginTransaction();
 
             $validator = Validator::make($request->all(), [
                 'ticket' => 'required|exists:tickets,id',
@@ -65,10 +65,10 @@ class PaymentController extends Controller
                         if (!empty($walletTransactionResponse) && $walletTransactionResponse['success']) {
 
                             $customer = null;
-                            $found_customer = Customer::where('mobile_number', $request->user['phone_number'])
-                                ->first();
+                            $found_customer = Customer::where('mobile_number', $request->user['phone_number'])->first();
 
                             if (empty($found_customer)) {
+
                                 $customer = new Customer();
                                 $customer->name = $request->user['pushname'];
                                 $customer->bot_id = $request->user['_id']['$oid'];
@@ -76,8 +76,11 @@ class PaymentController extends Controller
                                 $customer->created_at = now();
                                 $customer->updated_at = now();
                                 $customer->save();
+
                             } else {
+
                                 $customer = $found_customer;
+
                             }
 
                             $discount = 0;
@@ -88,6 +91,7 @@ class PaymentController extends Controller
                             $order->subtotal = $subtotal = doubleval($ticket->price) * intval($request->qty);
                             $order->total = $total = $subtotal - $discount;
                             $order->type = 'compra';
+                            $order->ticket_id = $ticket->id;
                             $order->created_at = now();
                             $order->updated_at = now();
                             $order->save();
@@ -104,7 +108,6 @@ class PaymentController extends Controller
                             $orderDetail->created_at = now();
                             $orderDetail->updated_at = now();
                             $orderDetail->save();
-
 
                             $payment = new Payment();
                             $payment->order_id = $order->id;
@@ -136,16 +139,24 @@ class PaymentController extends Controller
                                 'message' => 'Oops, tivemos um problema ao tentar efectivar o pagamento. Porfavor, tente novamente ou contacte a equipa de suporte',
                             );
                         }
-                    } else {
 
-                        $response = array(
-                            'status' => $status = 404,
-                            'success' => false,
-                            'data' => [],
-                            'message' => 'Ticket não encontrado.',
-                        );
-                    }
+                }else{
+
+
+
+
+
                 }
+
+            } else {
+
+                $response = array(
+                    'status' => $status = 404,
+                    'success' => false,
+                    'data' => [],
+                    'message' => 'Ticket não encontrado.',
+                );
+            }
             }
         } catch (\Exception $ex) {
 
