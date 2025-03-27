@@ -76,11 +76,9 @@ class PaymentController extends Controller
                                 $customer->created_at = now();
                                 $customer->updated_at = now();
                                 $customer->save();
-
                             } else {
 
                                 $customer = $found_customer;
-
                             }
 
                             $discount = 0;
@@ -139,24 +137,16 @@ class PaymentController extends Controller
                                 'message' => 'Oops, tivemos um problema ao tentar efectivar o pagamento. Porfavor, tente novamente ou contacte a equipa de suporte',
                             );
                         }
+                    }
+                } else {
 
-                }else{
-
-
-
-
-
+                    $response = array(
+                        'status' => $status = 404,
+                        'success' => false,
+                        'data' => [],
+                        'message' => 'Ticket não encontrado.',
+                    );
                 }
-
-            } else {
-
-                $response = array(
-                    'status' => $status = 404,
-                    'success' => false,
-                    'data' => [],
-                    'message' => 'Ticket não encontrado.',
-                );
-            }
             }
         } catch (\Exception $ex) {
 
@@ -165,7 +155,7 @@ class PaymentController extends Controller
                 'success' => false,
                 'data' => [],
                 'message' => 'Oops, ocorreu um erro ao tentar efectuar pagamento, porfavor contacte a equipa de suporte.',
-                'exception'=>json_encode($ex->getMessage()),
+                'exception' => json_encode($ex->getMessage()),
             );
         }
 

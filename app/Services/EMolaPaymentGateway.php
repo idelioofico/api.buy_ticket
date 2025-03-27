@@ -33,7 +33,7 @@ class EMolaPaymentGateway implements IPaymentGateway
             'content' => $content = $this->contentGenerator($amount, $reference),
             'business' => Configuration::getSingleValue('service_c2b_emola'),
             'reference' => $reference,
-            'msisdn' => Helper::ValidateMSISDN($msisdn)
+            'msisdn' => $msisdn
         ];
 
         $attributes['request'] = json_encode($request);
